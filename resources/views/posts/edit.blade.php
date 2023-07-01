@@ -12,9 +12,6 @@
                         enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
-
-                        <input type="hidden" name="user_id" value="{{ 1 }}">
-
                         <div class="control-group mb-3">
                             <select class="form-control border-0 @error('category_id') is-invalid @enderror"
                                 name="category_id">

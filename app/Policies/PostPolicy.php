@@ -34,6 +34,6 @@ class PostPolicy
 
     public function posts_mine(): bool
     {
-        // return auth()->check();
+        return auth()->check();
     }
 }

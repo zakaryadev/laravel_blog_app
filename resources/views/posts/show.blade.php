@@ -7,6 +7,11 @@
     </x-jumbotron>
     <!-- Blog Start -->
     <div class="container py-5">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="row">
             <div class="col-lg-8">
                 @auth
@@ -72,7 +77,29 @@
                                 <h6><a href="">{{ $comment->user->name }}</a>
                                     <small><i>{{ getShortTime($comment->created_at) }}</i></small>
                                 </h6>
-                                <p>{{ $comment->body }}</p>
+                                <div class="d-flex" style="justify-content: space-between;">
+                                    <p>{{ $comment->body }}</p>
+                                    @auth
+                                        @canany(['update', 'delete'], $comment)
+                                            <div class="text-right mb-4">
+                                                <a href="{{ route('comments.edit', ['comment' => $comment->id]) }}"
+                                                    class="btn btn-success">
+                                                    <i class="fas fa-pen"></i>
+                                                </a>
+                                                <form onsubmit="return confirm('Siz bul kommentti óshirejaqsızba?');"
+                                                    class="d-inline"
+                                                    action="{{ route('comments.destroy', ['comment' => $comment->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endcanany
+                                    @endauth
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -83,11 +110,6 @@
                 <div class="bg-secondary mb-3" style="padding: 30px;">
                     <h3 class="mb-4">Kommentariya qaldiriw</h3>
                     @auth
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
                         <form action="{{ route('comments.store') }}" method="POST">
                             @csrf
                             <input type="text" class="form-control border-0" hidden name="post_id"

@@ -23,7 +23,7 @@
         <p>{{ $post->short_content }}</p>
         <div class="d-flex flex-wrap mb-1">
             @foreach ($post->tags as $tag)
-                <a class="btn btn-warning m-1">{{ $tag->name }}</a>
+                <a href="#" class="btn btn-warning mx-1"> {{ $tag->name }}</a>
             @endforeach
         </div>
         <a class="border-bottom border-primary text-uppercase text-decoration-none"
